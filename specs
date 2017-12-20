@@ -25,6 +25,7 @@ menu
 
 item
 {
+    id
     name: <item_name>
     category: <category_name>
     price: <price>
@@ -35,6 +36,7 @@ item
 
 dish
 {
+    id: <generated_id>
     name: <dish_name>
     ingredients:
         ingredient: <ingredient_name>

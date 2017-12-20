@@ -3,6 +3,10 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import VueFirestore from 'vue-firestore'
+
+// explicit installation required in module environments
+Vue.use(VueFirestore)
 
 Vue.config.productionTip = false
 
