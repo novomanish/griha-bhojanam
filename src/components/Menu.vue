@@ -1,18 +1,5 @@
 <template>
-  <div class="hello">
-    <h1>{{ msg }}</h1>
 
-    <ul>
-      <li v-for="item in items">
-        {{item.name}}
-      </li>
-      <li v-for="order in orders">
-        {{ order.house }}
-        {{ order.for.type }}
-
-      </li>
-    </ul>
-  </div>
 </template>
 
 <script>
