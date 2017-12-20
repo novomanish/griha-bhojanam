@@ -9,7 +9,7 @@
 </template>
 
 <script>
-  import fb from '../firebase'
+  import firestore from '../firestore'
   export default {
     name: 'Dummy',
     data () {
@@ -19,7 +19,7 @@
     },
     firestore: {
       // Collection
-      items: fb.collection('item')
+      items: firestore.collection('item')
     }
   }
 </script>
