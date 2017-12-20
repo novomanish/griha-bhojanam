@@ -1,0 +1,42 @@
+API
+
+order
+    Filter: house=<house_number>
+
+{
+    id: <generated_id>
+    house: <house_number>
+    for:
+        type: LUNCH | DINNER
+        date: <date>
+    items:
+        item: ITEM
+        qty: <quantity>
+ }
+
+menu
+
+{
+    for:
+        type: LUNCH | DINNER
+        date: <date>
+    items: ITEM List
+}
+
+item
+{
+    name: <item_name>
+    category: <category_name>
+    price: <price>
+    dishes:
+        dish: <dish_name>
+        serving: <serving_qty>
+}
+
+dish
+{
+    name: <dish_name>
+    ingredients:
+        ingredient: <ingredient_name>
+        qty: <ingredient_qty>
+}
