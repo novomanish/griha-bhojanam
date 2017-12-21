@@ -6,11 +6,16 @@
           <v-list-tile-content>
             <v-list-tile-title v-html="item.name" class="capitalize"></v-list-tile-title>
           </v-list-tile-content>
+          <v-list-tile-action>
+            <v-btn icon v-on:click="remove(item)">
+              <v-icon>close</v-icon>
+            </v-btn>
+          </v-list-tile-action>
         </v-list-tile>
       </template>
     </v-list>
 
-    <v-form v-model="valid" ref="form" lazy-validation>
+    <v-form v-model="valid" ref="form">
       <v-text-field
         label="Dish Name"
         v-model="name"
@@ -22,8 +27,9 @@
         @click="submit"
         :disabled="!valid"
       >
-        submit
+        add
       </v-btn>
+      <v-btn @click="clear">clear</v-btn>
     </v-form>
   </div>
 </template>
@@ -38,13 +44,20 @@
       name: '',
       nameRules: [
         (v) => !!v || 'Name is required',
-        (v) => (v && v.length <= 20) || 'Name must be less than 10 characters'
+        (v) => (v && v.length <= 20) || 'Name must be less than 20 characters'
       ]
     }),
     methods: {
       submit () {
         if (this.$refs.form.validate()) {
+          this.$firestore.dishes.add({
+            name: this.name
+          })
         }
+        this.clear()
+      },
+      remove (item) {
+        this.$firestore.dishes.doc(item['.key']).delete()
       },
       clear () {
         this.$refs.form.reset()
