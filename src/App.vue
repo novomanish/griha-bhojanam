@@ -1,7 +1,13 @@
 <template>
   <div id="app">
     <v-app>
-      <v-toolbar app></v-toolbar>
+      <v-toolbar app>
+        <v-toolbar-title>Griha Bhojanam</v-toolbar-title>
+        <v-spacer></v-spacer>
+        <v-btn icon :to="{path:'/'}">
+          <v-icon>home</v-icon>
+        </v-btn>
+      </v-toolbar>
       <v-content>
           <v-container fluid><router-view/></v-container>
       </v-content>
