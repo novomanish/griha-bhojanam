@@ -29,19 +29,23 @@
         :rules="priceRules"
         required
       ></v-text-field>
-      <v-list two-line>
+      <v-list v-if="selectedDishes.length > 0">
         <template v-for="item in selectedDishes">
           <v-list-tile>
             <v-list-tile-content>
               <v-list-tile-title class="capitalize">
                 {{item.name}}
               </v-list-tile-title>
+
+            </v-list-tile-content>
+            <v-list-tile-action>
               <v-select
-                :items="[1,2,4,5,6]"
+                :items="[1,2,3,4,5,6]"
                 v-model="item.serving"
                 label="Servings"
+                style="width:100px"
               ></v-select>
-            </v-list-tile-content>
+            </v-list-tile-action>
             <v-list-tile-action>
               <v-btn icon v-on:click="removeDish(item)">
                 <v-icon>close</v-icon>
@@ -53,14 +57,11 @@
 
       <v-select
         label="Select Dishes"
-        v-bind:items="dishes"
-        item-text="name"
-        v-model="selectedDishes"
-        multiple
+        :items="dishesName"
+        v-model="select"
         autocomplete
-        max-height="400"
-        hint="Pick dishes to include"
-        persistent-hint
+        clearable
+        combobox
         @input="onSelectDish"
       ></v-select>
       <v-btn
@@ -83,6 +84,7 @@
       valid: true,
       name: '',
       price: 0,
+      select: null,
       selectedDishes: [],
       nameRules: [
         (v) => !!v || 'Name is required'
@@ -92,6 +94,11 @@
         (v) => !isNaN(v) || 'Price must be number'
       ]
     }),
+    computed: {
+      dishesName () {
+        return this.dishes.map(dish => dish.name)
+      }
+    },
     methods: {
       submit () {
         if (this.$refs.form.validate()) {
@@ -108,13 +115,25 @@
       },
       clear () {
         this.$refs.form.reset()
+        this.selectedDishes.splice(0, this.selectedDishes.length)
       },
       removeDish (item) {
-//        this.selectedDishes.
+        this.selectedDishes.splice(this.selectedDishes.indexOf(item), 1)
       },
       onSelectDish () {
-        if (this.selectedDishes.length === 1 && !this.name) {
-          this.name = this.selectedDishes[0].name
+        if (this.select && this.selectedDishes.every(dish => dish.name !== this.select)) {
+          let dish = this.dishes.find(dish => dish.name === this.select)
+          if (!dish) {
+            dish = {
+              'name': this.select
+            }
+            this.$firestore.dishes.add(dish)
+          }
+          dish.serving = 1
+          this.selectedDishes.push(dish)
+          if (this.selectedDishes.length === 1 && !this.name) {
+            this.name = this.select
+          }
         }
       }
     },
