@@ -5,6 +5,7 @@
         <v-list-tile>
           <v-list-tile-content>
             <v-list-tile-title v-html="item.name" class="capitalize"></v-list-tile-title>
+            <v-list-tile-sub-title>INR {{ item.price }}</v-list-tile-sub-title>
           </v-list-tile-content>
           <v-list-tile-action>
             <v-btn icon v-on:click="remove(item)">
@@ -20,6 +21,12 @@
         label="Item Name"
         v-model="name"
         :rules="nameRules"
+        required
+      ></v-text-field>
+      <v-text-field
+        label="Price"
+        v-model="price"
+        :rules="priceRules"
         required
       ></v-text-field>
       <v-list two-line>
@@ -75,16 +82,23 @@
     data: () => ({
       valid: true,
       name: '',
+      price: 0,
       selectedDishes: [],
       nameRules: [
         (v) => !!v || 'Name is required'
+      ],
+      priceRules: [
+        (v) => !!v || 'Price is required',
+        (v) => !isNaN(v) || 'Price must be number'
       ]
     }),
     methods: {
       submit () {
         if (this.$refs.form.validate()) {
-          this.$firestore.dishes.add({
-            name: this.name
+          this.$firestore.items.add({
+            name: this.name,
+            price: this.price,
+            dishes: this.selectedDishes
           })
         }
         this.clear()
