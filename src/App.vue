@@ -28,7 +28,6 @@
 <style src='normalize.css/normalize.css'></style>
 
 <style>
-  @import url(http://fonts.googleapis.com/icon?family=Material+Icons);
   @import 'vuetify/src/stylus/main.styl'
 
   #app {
