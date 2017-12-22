@@ -22,19 +22,27 @@
         :rules="nameRules"
         required
       ></v-text-field>
-
-      <template v-for="item in selectedDishes">
-        <v-list-tile>
-          <v-list-tile-content>
-            <v-list-tile-title v-html="item.name" class="capitalize"></v-list-tile-title>
-          </v-list-tile-content>
-          <v-list-tile-action>
-            <v-btn icon v-on:click="removeDish(item)">
-              <v-icon>close</v-icon>
-            </v-btn>
-          </v-list-tile-action>
-        </v-list-tile>
-      </template>
+      <v-list two-line>
+        <template v-for="item in selectedDishes">
+          <v-list-tile>
+            <v-list-tile-content>
+              <v-list-tile-title class="capitalize">
+                {{item.name}}
+              </v-list-tile-title>
+              <v-select
+                :items="[1,2,4,5,6]"
+                v-model="item.serving"
+                label="Servings"
+              ></v-select>
+            </v-list-tile-content>
+            <v-list-tile-action>
+              <v-btn icon v-on:click="removeDish(item)">
+                <v-icon>close</v-icon>
+              </v-btn>
+            </v-list-tile-action>
+          </v-list-tile>
+        </template>
+      </v-list>
 
       <v-select
         label="Select Dishes"
@@ -46,6 +54,7 @@
         max-height="400"
         hint="Pick dishes to include"
         persistent-hint
+        @input="onSelectDish"
       ></v-select>
       <v-btn
         @click="submit"
@@ -88,6 +97,11 @@
       },
       removeDish (item) {
 //        this.selectedDishes.
+      },
+      onSelectDish () {
+        if (this.selectedDishes.length === 1 && !this.name) {
+          this.name = this.selectedDishes[0].name
+        }
       }
     },
     firestore: {
