@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-list two-line>
-      <template v-for="item in dishes">
+      <template v-for="item in items">
         <v-list-tile>
           <v-list-tile-content>
             <v-list-tile-title v-html="item.name" class="capitalize"></v-list-tile-title>
@@ -17,11 +17,36 @@
 
     <v-form v-model="valid" ref="form">
       <v-text-field
-        label="Dish Name"
+        label="Item Name"
         v-model="name"
         :rules="nameRules"
         required
       ></v-text-field>
+
+      <template v-for="item in selectedDishes">
+        <v-list-tile>
+          <v-list-tile-content>
+            <v-list-tile-title v-html="item.name" class="capitalize"></v-list-tile-title>
+          </v-list-tile-content>
+          <v-list-tile-action>
+            <v-btn icon v-on:click="removeDish(item)">
+              <v-icon>close</v-icon>
+            </v-btn>
+          </v-list-tile-action>
+        </v-list-tile>
+      </template>
+
+      <v-select
+        label="Select Dishes"
+        v-bind:items="dishes"
+        item-text="name"
+        v-model="selectedDishes"
+        multiple
+        autocomplete
+        max-height="400"
+        hint="Pick dishes to include"
+        persistent-hint
+      ></v-select>
       <v-btn
         @click="submit"
         :disabled="!valid"
@@ -37,10 +62,11 @@
   import firestore from '../firestore'
 
   export default {
-    name: 'Dish',
+    name: 'Item',
     data: () => ({
       valid: true,
       name: '',
+      selectedDishes: [],
       nameRules: [
         (v) => !!v || 'Name is required'
       ]
@@ -55,14 +81,18 @@
         this.clear()
       },
       remove (item) {
-        this.$firestore.dishes.doc(item['.key']).delete()
+        this.$firestore.items.doc(item['.key']).delete()
       },
       clear () {
         this.$refs.form.reset()
+      },
+      removeDish (item) {
+//        this.selectedDishes.
       }
     },
     firestore: {
       // Collection
+      items: firestore.collection('item'),
       dishes: firestore.collection('dish')
     }
   }

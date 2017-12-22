@@ -1,5 +1,8 @@
 <template>
-  <v-btn color="primary" :to="{name:'Dish'}">Dishes ({{dishes.length}})</v-btn>
+  <div>
+    <v-btn color="primary" :to="{name:'Dish'}">Dishes ({{dishes.length}})</v-btn>
+    <v-btn color="primary" :to="{name:'Item'}">Items ({{items.length}})</v-btn>
+  </div>
 </template>
 
 <script>
